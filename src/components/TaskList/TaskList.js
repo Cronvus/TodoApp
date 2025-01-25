@@ -1,5 +1,6 @@
 import React from "react";
-
+import PropTypes from 'prop-types';
+import {formatDistanceToNow} from "date-fns";
 import Task from "../Task/Task";
 import "./TaskList.css"
 
@@ -8,6 +9,7 @@ const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
     const elements = todos.map((item) =>{
 
         const{id, ...elProps} = item;
+        const afterTime = formatDistanceToNow(new Date(item.createdTask));
         let className = 'active';
         let checked = false;
         if(item.completed){
@@ -22,6 +24,7 @@ const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
                 <li key={id} className={className}>
                     <Task {...elProps}
                           checked={checked}
+                          timerTask={afterTime}
                           onCompleted={() => onCompleted(id)}
                           onDeleted={() => onDeleted(id)}
                           onEditing={() => onEditing(id)}/>
@@ -33,6 +36,7 @@ const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
                 <li key={id} className={className} >
                     <Task {...elProps}
                           checked={checked}
+                          timerTask={afterTime}
                           className={className}
                           onCompleted={()=>onCompleted(id)}
                           onDeleted={()=>onDeleted(id)}
@@ -49,6 +53,20 @@ const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
         </ul>
     )
 
+}
+TaskList.defaultProps = {
+    filterData: 'all',
+    todos: () => {},
+    onCompleted: () => {},
+    onDeleted: () => {},
+    onEditing: () => {},
+}
+TaskList.propTypes = {
+    filterData: PropTypes.string,
+    todos: PropTypes.instanceOf(Array),
+    onCompleted: PropTypes.func,
+    onDeleted: PropTypes.func,
+    onEditing: PropTypes.func,
 }
 
 export default TaskList;

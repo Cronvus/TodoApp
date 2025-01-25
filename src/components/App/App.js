@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-
+import PropTypes from 'prop-types'
 import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import TaskList from "../TaskList/TaskList";
 import Footer from "../Footer/Footer";
@@ -17,15 +17,38 @@ export default class App extends Component{
         filterData: 'all'
     }
 
+    static defaultProps = {
+        todoData: [
+            {
+                label: 'Имя не задано',
+                completed: false,
+                checked: false,
+                editing: false,
+                id: 100,
+                createdTask: new Date()
+            }
+        ],
+        filterData : 'all'
+    }
+
+    static propTypes = {
+        todoData: PropTypes.instanceOf(Array),
+        filterData: PropTypes.string
+    }
+
     creatItem(label){
         return{
             label,
             completed: false,
             checked: false,
             editing: false,
-            id: this.maxId++
+            id: this.maxId++,
+            createdTask: new Date(),
         }
     }
+
+
+
 
     deleteItem = (id) => {
         this.setState(({todoData})=>{
@@ -117,14 +140,11 @@ export default class App extends Component{
                               onEditing = {this.editingItem}/>
                     <Footer onDelAll = {this.deleteAll}
                             onFilter = {this.selectFilterData}
-                            // onFilterCom = {this.filterItemCom}
-                            // onFilterAct = {this.filterItemAct}
                             toDo={todoCount}/>
                 </section>
             </section>
 
         );
     }
-
 
 }

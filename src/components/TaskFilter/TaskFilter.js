@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import "./TaskFilter.css";
-import {click} from "@testing-library/user-event/dist/click";
+import PropTypes from 'prop-types'
+
 
 export default class TaskFilter extends Component{
 
@@ -8,6 +9,14 @@ export default class TaskFilter extends Component{
         btnAll: true,
         btnActive: false,
         btnComplete: false
+    }
+
+    static defaultProps = {
+        onFilter: () => {}
+    }
+
+    static propTypes = {
+        onFilter: PropTypes.func,
     }
 
 

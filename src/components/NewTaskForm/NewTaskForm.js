@@ -1,11 +1,22 @@
 import React, {Component} from "react";
 import "./NewTaskForm.css";
+import PropTypes from "prop-types";
 
 export default class NewTaskForm extends Component{
 
     state ={
-        label: ''
+        label: '',
+        placeholder: 'What needs to be done?',
 }
+
+    static defaultProps ={
+        onAdd: () => {},
+    }
+
+    static propTypes = {
+        onAdd: PropTypes.func
+    }
+
     onLabel = (e) => {
         this.setState({
             label: e.target.value
