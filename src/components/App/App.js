@@ -6,7 +6,7 @@ import Footer from '../Footer/Footer';
 export default class App extends Component {
   maxId = 100;
 
-  maxname = "den"
+
 
   state = {
     todoData: [this.creatItem('Completed task'), this.creatItem('Editing task'), this.creatItem('Active task')],
