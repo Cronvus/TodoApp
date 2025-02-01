@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import {formatDistanceToNow} from "date-fns";
 import Task from "../Task/Task";
 import "./TaskList.css"
+import EditingForm from "../EditingForm/EditingForm";
 
-const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
+function TaskList({todos, onDeleted, onCompleted, onEditing, filterData, onEditLabel}) {
 
-    const elements = todos.map((item) =>{
+
+    const elements = todos.map((item) => {
 
         const{id, ...elProps} = item;
         const afterTime = formatDistanceToNow(new Date(item.createdTask));
@@ -21,27 +23,32 @@ const TaskList = ({todos, onDeleted, onCompleted, onEditing, filterData}) => {
         }
         if(filterData ==='all') {
             return (
-                <li key={id} className={className}>
+                <li key={id} className={className} >
                     <Task {...elProps}
                           checked={checked}
                           timerTask={afterTime}
                           onCompleted={() => onCompleted(id)}
                           onDeleted={() => onDeleted(id)}
                           onEditing={() => onEditing(id)}/>
-                    <input type='text' className='edit' value='Editing task'/>
+                    {item.editing ? (
+                        <EditingForm id={id} label={item.label} onEditLabel={onEditLabel}/>
+                    ) : null }
                 </li>
             )
-        }else if(className === filterData || className === 'editing'){
+        }if(className === filterData || className === 'editing'){
             return(
-                <li key={id} className={className} >
+                <li key={id} className={className}>
                     <Task {...elProps}
                           checked={checked}
                           timerTask={afterTime}
                           className={className}
                           onCompleted={()=>onCompleted(id)}
                           onDeleted={()=>onDeleted(id)}
-                          onEditing={()=>onEditing(id)}/>
-                    <input type='text' className='edit' value='Editing task'/>
+                          onEditing={()=>onEditing(id)}
+                    />
+                    {item.editing ? (
+                        <EditingForm id={id} label={item.label} onEditLabel={onEditLabel}/>
+                    ) : null }
                 </li>
             )
         }
@@ -60,6 +67,7 @@ TaskList.defaultProps = {
     onCompleted: () => {},
     onDeleted: () => {},
     onEditing: () => {},
+    onEditLabel: () => {}
 }
 TaskList.propTypes = {
     filterData: PropTypes.string,
@@ -67,6 +75,7 @@ TaskList.propTypes = {
     onCompleted: PropTypes.func,
     onDeleted: PropTypes.func,
     onEditing: PropTypes.func,
+    onEditLabel: PropTypes.func
 }
 
 export default TaskList;

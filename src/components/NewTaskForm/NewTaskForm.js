@@ -4,10 +4,9 @@ import PropTypes from "prop-types";
 
 export default class NewTaskForm extends Component{
 
-    state ={
-        label: '',
-        placeholder: 'What needs to be done?',
-}
+    state = {
+        label: ''
+    }
 
     static defaultProps ={
         onAdd: () => {},
@@ -25,9 +24,13 @@ export default class NewTaskForm extends Component{
 
     onSubmit = (e) => {
         e.preventDefault()
-        this.props.onAdd(this.state.label)
+
+        const {onAdd} = this.props;
+        const {label} = this.state;
+
+        onAdd(label)
             this.setState({
-                label: '',
+                label: ''
             })
     }
 
@@ -35,6 +38,8 @@ export default class NewTaskForm extends Component{
 
 
     render() {
+
+        const {label} = this.state
 
 
         return (
@@ -45,7 +50,7 @@ export default class NewTaskForm extends Component{
                    type='text'
                    onChange={this.onLabel}
                    placeholder="What needs to be done?"
-                   value={this.state.label}
+                   value={label}
                    />
             </form>
         </header>

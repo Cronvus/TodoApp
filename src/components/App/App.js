@@ -1,5 +1,4 @@
 import React,{Component} from "react";
-import PropTypes from 'prop-types'
 import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import TaskList from "../TaskList/TaskList";
 import Footer from "../Footer/Footer";
@@ -7,6 +6,8 @@ import Footer from "../Footer/Footer";
 export default class App extends Component{
 
     maxId = 100;
+
+
 
     state = {
         todoData: [
@@ -17,35 +18,8 @@ export default class App extends Component{
         filterData: 'all'
     }
 
-    static defaultProps = {
-        todoData: [
-            {
-                label: 'Имя не задано',
-                completed: false,
-                checked: false,
-                editing: false,
-                id: 100,
-                createdTask: new Date()
-            }
-        ],
-        filterData : 'all'
-    }
 
-    static propTypes = {
-        todoData: PropTypes.instanceOf(Array),
-        filterData: PropTypes.string
-    }
 
-    creatItem(label){
-        return{
-            label,
-            completed: false,
-            checked: false,
-            editing: false,
-            id: this.maxId++,
-            createdTask: new Date(),
-        }
-    }
 
 
 
@@ -115,6 +89,24 @@ export default class App extends Component{
 
         })
     }
+    editingLabel = (id, label) => {
+        this.setState(({todoData}) => {
+            const newArray = todoData.map((el) => {
+                if(el.id === id) {
+                    return {
+                        ...el,
+                        label,
+                        completed: false,
+                        editing: false
+                    }
+                }
+                return el
+            })
+            return{
+                todoData: newArray
+            }
+        })
+    }
 
     selectFilterData = (event) => {
         this.setState({
@@ -122,10 +114,21 @@ export default class App extends Component{
         })
     }
 
+    creatItem(label){
+        return{
+            label,
+            completed: false,
+            checked: false,
+            editing: false,
+            id: this.maxId++,
+            createdTask: new Date(),
+        }
+    }
+
 
     render() {
 
-        const {todoData} = this.state
+        const {todoData, filterData} = this.state
         const completeCount = todoData.filter((el) => el.completed).length
         const todoCount = todoData.length - completeCount
 
@@ -133,11 +136,13 @@ export default class App extends Component{
             <section className='todoapp'>
                 <NewTaskForm onAdd = {this.addItem}/>
                 <section className="main">
-                    <TaskList todos={this.state.todoData}
-                              filterData = {this.state.filterData}
+                    <TaskList todos={todoData}
+                              onAdd = {this.addItem}
+                              filterData = {filterData}
                               onCompleted = {this.completedItem}
                               onDeleted = {this.deleteItem}
-                              onEditing = {this.editingItem}/>
+                              onEditing = {this.editingItem}
+                              onEditLabel = {this.editingLabel}/>
                     <Footer onDelAll = {this.deleteAll}
                             onFilter = {this.selectFilterData}
                             toDo={todoCount}/>

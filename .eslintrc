@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "eslint-config-prettier",
+    "prettier"
+    ],
+  "parser": "@babel/eslint-parser",
+  "plugins": ["react"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "import/no-named-as-default-member": 0,
+    "import/no-named-as-default": 0,
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off",
+    "class-methods-use-this": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-props-no-spreading": "off",
+    "array-callback-return": "off",
+    "consistent-return": "off",
+    "no-param-reassign": "off",
+    "lines-between-class-members": "off",
+    "react/static-property-placement": "off",
+    "react/state-in-constructor": ["off"],
+    "no-unused-labels": "off"
+  }
+}
