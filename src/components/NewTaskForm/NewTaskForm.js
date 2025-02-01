@@ -1,60 +1,54 @@
-import React, {Component} from "react";
-import "./NewTaskForm.css";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import './NewTaskForm.css';
+import PropTypes from 'prop-types';
 
-export default class NewTaskForm extends Component{
+export default class NewTaskForm extends Component {
+  state = {
+    label: '',
+  };
 
-    state = {
-        label: ''
-    }
+  static defaultProps = {
+    onAdd: () => {},
+  };
 
-    static defaultProps ={
-        onAdd: () => {},
-    }
+  static propTypes = {
+    onAdd: PropTypes.func,
+  };
 
-    static propTypes = {
-        onAdd: PropTypes.func
-    }
+  onLabel = (e) => {
+    this.setState({
+      label: e.target.value,
+    });
+  };
 
-    onLabel = (e) => {
-        this.setState({
-            label: e.target.value
-        })
-    }
+  onSubmit = (e) => {
+    e.preventDefault();
 
-    onSubmit = (e) => {
-        e.preventDefault()
+    const { onAdd } = this.props;
+    const { label } = this.state;
 
-        const {onAdd} = this.props;
-        const {label} = this.state;
+    onAdd(label);
+    this.setState({
+      label: '',
+    });
+  };
 
-        onAdd(label)
-            this.setState({
-                label: ''
-            })
-    }
+  render() {
+    const { label } = this.state;
 
-
-
-
-    render() {
-
-        const {label} = this.state
-
-
-        return (
-        <header className='header'>
-            <h1>todos</h1>
-            <form className='form-new-todo' onSubmit={this.onSubmit}>
-            <input className='new-todo'
-                   type='text'
-                   onChange={this.onLabel}
-                   placeholder="What needs to be done?"
-                   value={label}
-                   />
-            </form>
-        </header>
+    return (
+      <header className="header">
+        <h1>todos</h1>
+        <form className="form-new-todo" onSubmit={this.onSubmit}>
+          <input
+            className="new-todo"
+            type="text"
+            onChange={this.onLabel}
+            placeholder="What needs to be done?"
+            value={label}
+          />
+        </form>
+      </header>
     );
-    }
-};
-
+  }
+}
