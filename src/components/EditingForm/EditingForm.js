@@ -42,7 +42,7 @@ export default class EditingForm extends Component {
       <input
         type="text"
         className="edit"
-        placeholder={label}
+        defaultValue={label}
         onChange={this.onLabelChange}
         onKeyUp={this.onKeySubmit}
       />

@@ -27,7 +27,13 @@ export default class NewTaskForm extends Component {
     const { onAdd } = this.props;
     const { label } = this.state;
 
-    onAdd(label);
+    if(label.trim() === ''){
+      onAdd("Название не задано");
+    } else {
+      onAdd(label)
+    }
+
+
     this.setState({
       label: '',
     });
