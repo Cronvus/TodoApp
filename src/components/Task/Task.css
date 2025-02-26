@@ -149,6 +149,34 @@
   content: '✎';
 }
 
+.todo-list li .icon-pause,
+.todo-list li .icon-play {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  right: 18rem;
+}
+
+.todo-list li .icon-play {
+  font-size: 15px;
+}
+
+.icon-pause:after {
+  content: '⏸';
+}
+
+.icon-play:after {
+  content: '▶';
+}
+.timer-on-task{
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+  left: 16.5rem;
+  bottom: 20px;
+}
+
 .todo-list li .edit {
   display: none;
 }
