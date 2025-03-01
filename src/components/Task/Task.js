@@ -4,9 +4,8 @@ import './Task.css';
 
 export default class Task extends Component {
 
+
   state ={
-    min: 12,
-    sec: 35,
     isCount: false
   }
 
@@ -17,6 +16,7 @@ export default class Task extends Component {
     onDeleted: () => {},
     onCompleted: () => {},
     onEditing: () => {},
+    onCount: () => {},
   };
 
   static propTypes = {
@@ -26,32 +26,44 @@ export default class Task extends Component {
     onDeleted: PropTypes.func,
     onEditing: PropTypes.func,
     onCompleted: PropTypes.func,
+    onCount: PropTypes.func,
+    sec: PropTypes.number,
+    min: PropTypes.number,
   };
 
-
-  minValue = () => {
-    const { min } = this.state;
-    this.setState({
-      min: min - 1,
-      sec: 59
-    })
+  componentDidUpdate(prevProps) {
+    const { min, sec } = this.props;
+    if(prevProps.min !== min || prevProps.sec !== sec) {
+      this.setState({
+        isCount: false
+      })
+    }
   }
 
-  secValue = () => {
-    const { min, sec, isCount } = this.state;
-    const { onCompleted } = this.props;
+  componentWillUnmount() {
+    clearInterval(this.counterID)
+  }
+
+  minValue = (min) => {
+    const { onCount } = this.props;
+      const newMin = min - 1
+      const newSec = 59
+      onCount(this.id, newMin, newSec)
+      return { min: newMin, sec: newSec }
+  }
+
+  secValue = (min, sec) => {
+    const { isCount } = this.state;
+    const {  onCount } = this.props;
     if (min === 0 && sec === 0 && isCount) {
-      onCompleted()
       clearInterval(this.counterID)
       this.setState({ isCount: false })
-    }
-    if(sec > 0) {
-      this.setState({
-        sec: sec - 1,
-        isCount: true
-      })
+    }else if(sec > 0) {
+        const newSec = sec -1
+        onCount(this.id, min, newSec)
+        return { sec: newSec }
     }else {
-      this.minValue()
+      return this.minValue(min)
     }
   }
 
@@ -64,21 +76,26 @@ export default class Task extends Component {
   onStart = (event) =>{
     event.stopPropagation()
     this.setState({ isCount: true })
+    const { min, sec, onCount } = this.props
     this.counterID = setInterval(() => {
-      this.secValue()
+      const newState = this.secValue(min, sec)
+      if(newState?.min !== undefined && newState?.sec !== undefined) {
+        onCount(this.id, newState.min, newState.sec)
+        console.log(newState.min, newState.sec)
+      }
     }, 1000)
   }
 
 
  render() {
-   const { label, checked, onDeleted, onCompleted, onEditing, timerTask } = this.props;
-   const { min, sec, isCount } = this.state;
+   const { label, checked, onDeleted, onCompleted, onEditing, timerTask, min, sec} = this.props;
+   const { isCount } = this.state;
    const buttonTimer = !isCount ?(
      <button type='button' className='icon icon-play' onClick={this.onStart} />
    ) : (<button type='button' className='icon icon-pause' onClick={this.onPause} />)
     return (
-      <div className="view">
-        <input className="toggle" type="checkbox" checked={checked} onClick={onCompleted} />
+      <div className="view" >
+        <input className="toggle" type="checkbox" checked={checked}  onClick={onCompleted} />
         <label>
           <span className='description'>
             {label}

@@ -19,6 +19,9 @@
     "class-methods-use-this": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "react/require-default-props": "off",
+    "react/destructuring-assignment": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
     "array-callback-return": "off",
@@ -27,6 +30,7 @@
     "lines-between-class-members": "off",
     "react/static-property-placement": "off",
     "react/state-in-constructor": ["off"],
-    "no-unused-labels": "off"
+    "no-unused-labels": "off",
+    "no-nested-ternary": "off"
   }
 }

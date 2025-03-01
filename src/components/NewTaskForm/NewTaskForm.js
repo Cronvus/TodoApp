@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 export default class NewTaskForm extends Component {
   state = {
     label: '',
+    min: '',
+    sec: ''
   };
 
   static defaultProps = {
@@ -15,44 +17,52 @@ export default class NewTaskForm extends Component {
     onAdd: PropTypes.func,
   };
 
-  onLabel = (e) => {
+  onTaskChange = (e) => {
     this.setState({
-      label: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
+
   onSubmit = (e) => {
-    e.preventDefault();
 
     const { onAdd } = this.props;
-    const { label } = this.state;
+    const { label, min, sec } = this.state;
 
-    if(label.trim() === ''){
-      onAdd("Название не задано");
-    } else {
-      onAdd(label)
+    if(e.key === 'Enter') {
+
+      if (label.trim() === '') {
+        onAdd("Название не задано", min, sec);
+      } else {
+        onAdd(label, min, sec)
+      }
+
+
+      this.setState({
+        label: '',
+        min: '',
+        sec: '',
+      });
     }
-
-
-    this.setState({
-      label: '',
-    });
   };
 
   render() {
-    const { label } = this.state;
+    const { label, min, sec } = this.state;
 
     return (
       <header className="header">
         <h1>todos</h1>
-        <form className="form-new-todo" onSubmit={this.onSubmit}>
+        <form className="form-new-todo" onKeyDown={this.onSubmit}>
           <input
             className="new-todo"
+            name='label'
             type="text"
-            onChange={this.onLabel}
+            onChange={this.onTaskChange}
             placeholder="What needs to be done?"
             value={label}
           />
+          <input className="todo-time" name='min' placeholder="Min" value={min} onChange={this.onTaskChange}/>
+          <input className="todo-time" name='sec' placeholder='Sec' value={sec} onChange={this.onTaskChange}/>
         </form>
       </header>
     );

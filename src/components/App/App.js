@@ -9,7 +9,7 @@ export default class App extends Component {
 
 
   state = {
-    todoData: [this.creatItem('Completed task'), this.creatItem('Editing task'), this.creatItem('Active task')],
+    todoData: [this.creatItem('Completed task', 0, 5), this.creatItem('Editing task', 15, 0), this.creatItem('Active task', 10, 0)],
     filterData: 'all',
   };
 
@@ -29,8 +29,8 @@ export default class App extends Component {
       };
     });
   };
-  addItem = (text) => {
-    const newItem = this.creatItem(text);
+  addItem = (label, min, sec) => {
+    const newItem = this.creatItem(label, min, sec);
     this.setState(({ todoData }) => {
       const newArray = [...todoData, newItem];
       return {
@@ -90,12 +90,16 @@ export default class App extends Component {
   };
 
   selectFilterData = (event) => {
+    const btnClick = event.target.innerText.toLowerCase()
     this.setState({
-      filterData: event.target.innerText.toLowerCase(),
+      filterData: btnClick === 'all' ? 'all' : btnClick === 'active' ? 'active' : 'completed',
     });
   };
 
-  creatItem(label) {
+  creatItem(label, min , sec) {
+    const valueMin = +min
+    const valueSec = +sec
+
     return {
       label,
       completed: false,
@@ -103,6 +107,8 @@ export default class App extends Component {
       editing: false,
       id: this.maxId++,
       createdTask: new Date(),
+      min: valueMin,
+      sec: valueSec,
     };
   }
 

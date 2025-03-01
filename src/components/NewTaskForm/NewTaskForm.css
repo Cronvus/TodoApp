@@ -31,7 +31,7 @@
 }
 
 .new-todo,
-.edit {
+.edit, .todo-time {
   position: relative;
   margin: 0;
   width: 100%;
@@ -48,10 +48,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.new-todo {
-  padding: 16px 16px 16px 60px;
-  margin-bottom: -15px;
-  border: none;
+.form-new-todo input{
   background: rgba(0, 0, 0, 0.003);
   box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+  border: none;
+  padding: 16px 0;
+  margin-bottom: -15px;
+}
+.form-new-todo .new-todo{
+  padding-left: 60px;
+}
+
+.todo-time {
+ width: 20%;
+}
+
+.form-new-todo{
+  display: flex;
 }
