@@ -11,7 +11,45 @@ export default class App extends Component {
   state = {
     todoData: [this.creatItem('Completed task', 0, 5), this.creatItem('Editing task', 15, 0), this.creatItem('Active task', 10, 0)],
     filterData: 'all',
+    timers: {},
   };
+
+  startTimer = (id) => {
+    this.setState(prevState => {
+      const newTimers = {...prevState.timers};
+      newTimers[id] = setInterval(() => {
+        this.setState(prevStat => {
+          const todoData = [...prevStat.todoData];
+          const taskId = todoData.findIndex(el => el.id === id);
+          if(taskId > -1) {
+            const {min, sec} = todoData[taskId].timers;
+            if(sec === 0 && min === 0) {
+              clearInterval(newTimers[id]);
+              delete newTimers[id];
+              return {timers: newTimers};
+            }
+            if(sec === 0) {
+              todoData[taskId].timers.min--;
+              todoData[taskId].timers.sec = 59;
+            } else {
+              todoData[taskId].timers.sec--;
+            }
+          }
+          return {todoData};
+        });
+      }, 1000);
+      return {timers: newTimers};
+    });
+  }
+
+  pauseTimer = (id) => {
+    this.setState(prevState => {
+      const newTimers = {...prevState.timers};
+      clearInterval(newTimers[id]);
+      delete newTimers[id];
+      return {timers: newTimers};
+    });
+  }
 
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
@@ -97,8 +135,6 @@ export default class App extends Component {
   };
 
   creatItem(label, min , sec) {
-    const valueMin = +min
-    const valueSec = +sec
 
     return {
       label,
@@ -107,13 +143,13 @@ export default class App extends Component {
       editing: false,
       id: this.maxId++,
       createdTask: new Date(),
-      min: valueMin,
-      sec: valueSec,
+      timers: {min , sec},
     };
   }
 
+
   render() {
-    const { todoData, filterData } = this.state;
+    const { todoData, filterData} = this.state;
     const completeCount = todoData.filter((el) => el.completed).length;
     const todoCount = todoData.length - completeCount;
 
@@ -129,6 +165,8 @@ export default class App extends Component {
             onDeleted={this.deleteItem}
             onEditing={this.editingItem}
             onEditLabel={this.editingLabel}
+            onStart={this.startTimer}
+            onPause={this.pauseTimer}
           />
           <Footer onDelAll={this.deleteAll} onFilter={this.selectFilterData} toDo={todoCount} />
         </section>

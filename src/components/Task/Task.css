@@ -155,11 +155,17 @@
   width: 18px;
   height: 18px;
   margin: auto;
-  right: 18rem;
 }
 
 .todo-list li .icon-play {
-  font-size: 15px;
+  font-size: 14px;
+  right: 17.8rem;
+  margin-bottom: 24px;
+}
+.todo-list li .icon-pause {
+  font-size: 16px;
+  right: 14.6rem;
+  margin-bottom: 26px;
 }
 
 .icon-pause:after {
