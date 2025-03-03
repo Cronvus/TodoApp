@@ -32,6 +32,6 @@
     "react/state-in-constructor": ["off"],
     "no-unused-labels": "off",
     "no-nested-ternary": "off",
-    "arrow-body-style": "off",
+    "arrow-body-style": "off"
   }
 }
