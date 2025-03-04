@@ -21,13 +21,14 @@ export default class NewTaskForm extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  };
+  }
+
 
 
   onSubmit = (e) => {
 
     const { onAdd } = this.props;
-    const { label, min, sec } = this.state;
+    const { label, min, sec} = this.state;
 
     if(e.key === 'Enter') {
 
@@ -41,7 +42,8 @@ export default class NewTaskForm extends Component {
       this.setState({
         label: '',
         min: '',
-        sec: '',
+        sec: ''
+
       });
     }
   };
